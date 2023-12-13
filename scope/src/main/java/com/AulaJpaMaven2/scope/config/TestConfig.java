@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.AulaJpaMaven2.scope.entities.Category;
 import com.AulaJpaMaven2.scope.entities.Order;
 import com.AulaJpaMaven2.scope.entities.OrderItem;
+import com.AulaJpaMaven2.scope.entities.Payment;
 import com.AulaJpaMaven2.scope.entities.Product;
 import com.AulaJpaMaven2.scope.entities.User;
 import com.AulaJpaMaven2.scope.entities.enums.OrderStatus;
@@ -62,11 +63,11 @@ public class TestConfig implements CommandLineRunner {
 		User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456"); 
 		
 		
+		
+		
 		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID,  u1); 
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2); 
 		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
-		
-		 
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
@@ -87,5 +88,16 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4 ));
+		
+		//Para salvar um objeto dependente em uma relação de um para um
+		//Não chamamos o repository do próprio objeto
+		
+		Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+		
+		//associei o meu pedido o1, com o pagamento pay1
+		
+		o1.setPayment(pay1);
+		
+		orderRepository.save(o1);
 	}
 }

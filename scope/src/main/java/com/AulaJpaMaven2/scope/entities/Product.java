@@ -110,7 +110,7 @@ public class Product implements Serializable {
 	public Set<Category> getCategories() {
 		return categories;
 	}
-	
+	//Usado para não ser feito um looping infinito na hora de chamar no postman
 	@JsonIgnore
 	public Set<Order> getOrders(){
 		Set<Order> set = new HashSet<>();
